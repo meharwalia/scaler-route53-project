@@ -14,10 +14,27 @@ router = APIRouter(
     dependencies=[Depends(attach_user)]
 )
 
+SEARCHABLE_FIELDS = {
+    "domain_name": HostedZone.domain_name,
+    "description": HostedZone.description,
+    "type": HostedZone.type,
+}
+
 @router.get("/")
-def get_hosted_zones(request : Request, session : SessionDep, offset:int = 0, limit : Annotated[int, Query(le=100)] = 100) -> list[HostedZone]:
+def get_hosted_zones(request : Request, session : SessionDep, search : str | None = None, offset:int = 0, limit : Annotated[int, Query(le=100)] = 100) -> list[HostedZone]:
     account_id = request.state.account_id
-    hosted_zones = session.exec(select(HostedZone).where(HostedZone.account == account_id).offset(offset).limit(limit)).all()
+    statement = select(HostedZone).where(HostedZone.account == account_id)
+
+    if search:
+        key, value = search.split(":")
+        if key not in SEARCHABLE_FIELDS:
+            raise HTTPException(status_code=400, detail="search must be key:value with key in " + ", ".join(SEARCHABLE_FIELDS))
+        column = SEARCHABLE_FIELDS[key]
+
+        if column:
+            statement = statement.where(column == value)
+
+    hosted_zones = session.exec(statement.offset(offset).limit(limit)).all()
     return hosted_zones
 
 @router.post("/")
