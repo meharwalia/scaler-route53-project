@@ -1,5 +1,3 @@
-from typing import Annotated
-from fastapi import Depends
 from sqlmodel import Session, SQLModel, create_engine, select
 from models.user import User
 
