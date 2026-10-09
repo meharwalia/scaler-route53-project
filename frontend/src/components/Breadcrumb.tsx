@@ -8,6 +8,7 @@ const labels: Record<string, string> = {
   "hosted-zones": "Hosted zones",
   "health-checks": "Health checks",
   records: "Records",
+  create: "Create hosted zone",
 };
 
 export default function Breadcrumb() {
