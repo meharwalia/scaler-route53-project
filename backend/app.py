@@ -1,7 +1,7 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from db import create_db_and_tables
-from routes import users, hosted_zones
+from routes import auth, hosted_zones
 from fastapi.middleware.cors import CORSMiddleware
 
 @asynccontextmanager
@@ -19,6 +19,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(users.router)
+app.include_router(auth.router)
 app.include_router(hosted_zones.router)
 

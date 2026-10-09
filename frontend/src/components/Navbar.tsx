@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import LogoutButton from "@/components/LogoutButton";
 
 export default function Navbar() {
   const userName = "John Doe"; 
@@ -16,8 +17,9 @@ export default function Navbar() {
         className="w-full max-w-md h-8 px-3 rounded bg-white/10 text-sm placeholder:text-neutral-400 outline-none focus:ring-2 focus:ring-blue-500"
       />
 
-      <div className="ml-auto flex items-center gap-2 shrink-0 text-sm">
-        {userName}
+      <div className="ml-auto flex items-center gap-3 shrink-0 text-sm">
+        <span>{userName}</span>
+        <LogoutButton />
       </div>
     </nav>
   );
