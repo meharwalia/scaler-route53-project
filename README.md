@@ -1,5 +1,7 @@
 # Scaler Assignment - Building a Route53 Clone by Mehar Walia
 
+## [DEMO LIVE URL - http://ec2-52-22-17-35.compute-1.amazonaws.com](http://ec2-52-22-17-35.compute-1.amazonaws.com)
+URL submitted in the google form might have changedas it was not a static ip, requesting you to please use the above URL.
 
 ## Introduction
 
