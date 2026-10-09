@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query, Request
 from sqlmodel import select, update, Session, delete
 from typing import Annotated
 from db import get_session
-from models.hosted_zone import HostedZone, utc_now
+from models.hosted_zone import HostedZone, utc_now, HostedZoneCreate
 from middleware.auth import attach_user
 import uuid
 
@@ -38,15 +38,20 @@ def get_hosted_zones(request : Request, session : SessionDep, search : str | Non
     return hosted_zones
 
 @router.post("/")
-def create_hosted_zone(hosted_zone: HostedZone, request : Request, session : SessionDep) -> HostedZone:
+def create_hosted_zone(data: HostedZoneCreate, request : Request, session : SessionDep) -> HostedZone:
     id = uuid.uuid4()
     account_id = request.state.account_id
     user_id = request.state.user_id
 
-    hosted_zone.id = id
-    hosted_zone.account = account_id
-    hosted_zone.created_by = user_id
-    hosted_zone.updated_by = user_id
+    hosted_zone = HostedZone.model_validate(
+        data,
+        update={
+            "id" : id,
+            "account" : account_id,
+            "created_by" : user_id,
+            "updated_by" : user_id
+        }
+    )
 
     session.add(hosted_zone)
     session.commit()

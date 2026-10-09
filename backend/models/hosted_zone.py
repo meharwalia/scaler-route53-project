@@ -24,3 +24,9 @@ class HostedZone(SQLModel, table=True):
     updated_at : datetime = Field(default_factory=utc_now)
     updated_by : int = Field(foreign_key="user.id")
     tags : str | None = Field(default=None)
+
+class HostedZoneCreate(SQLModel):
+    domain_name: str
+    description: str | None = None
+    type: ZoneType = ZoneType.public
+    tags: str | None = None
